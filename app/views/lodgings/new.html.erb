@@ -1,0 +1,40 @@
+
+
+<h1>Ajouter un nouveau logement</h1>
+
+<%= form_with url: lodgings_path, method: :post, local: true do |form|   %>
+    <div>
+        <%= form.label :title %>
+        <%= form.text_field :title, required: true %>
+    </div>
+    
+    <div>
+        <%= form.label :price %>
+        <%= form.number_field :price, required: true, step: '0.01' %>
+    </div>
+    
+    <div>
+        <%= form.label :description %>
+        <%= form.text_area :description, required: true %>
+    </div>
+    
+    <div>
+        <%= form.submit "Create Lodging" %>
+    </div>
+<% end %>
+
+<%= link_to "Retour à la liste", lodgings_path %>
+
+
+
+<% if @lodging.errors.any? %>
+  <div>
+    <h2>Form Errors</h2>
+    <ul>
+      <% @lodging.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
