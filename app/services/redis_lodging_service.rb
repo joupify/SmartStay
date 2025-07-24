@@ -39,6 +39,10 @@ class RedisLodgingService
     })
 
     # Publier événement pub/sub
+    payload = { event: "new_lodging", id: id, title: title }.to_json
+    Rails.logger.info "Publishing to lodgings_channel: #{payload}"
+    @redis.publish("lodgings_channel", payload)
+
     @redis.publish("lodgings_channel", { event: "new_lodging", id: id, title: title }.to_json)
 
     # Ajouter au stream pour historique
