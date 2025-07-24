@@ -7,9 +7,7 @@ class LodgingsController < ApplicationController
       @lodgings = @service.list_all_lodgings 
     end
 
-    @redis.zincrby("lodgings_popularity", 1, lodging[:key])
-    top_lodgings = @redis.zrevrange("lodgings_popularity", 0, 4, withscores: true)
-
+    @top_lodgings = @service.top_popular_lodgings
   end
 
 

@@ -1,34 +1,61 @@
-<div class="container d-flex flex-column mx-auto">
-  <!-- Barre de recherche -->
-    <div class="mb-3">
-        <%= form_with url: lodgings_path, method: :get, local: true, class: "d-flex gap-2" do %>
-            <%= text_field_tag :query, params[:query], class: "form-control", placeholder: "Rechercher un logement" %>
-            <%= submit_tag "Rechercher", class: "btn btn-primary" %>
-        <% end %>
-</div>
+<div class="container mt-4 mb-5">
+  <h1 class="h2 mb-4">Liste des logements</h1>
 
+  <div class="d-flex flex-column flex-md-row align-items-center justify-content-between gap-3 mb-4">
+    <!-- Formulaire de recherche -->
+    <%= form_with url: lodgings_path, method: :get, local: true, class: "flex-grow-1 w-100" do |form| %>
+      <div class="input-group">
+        <span class="input-group-text">
+          <i class="bi bi-search"></i>
+        </span>
+        <%= form.text_field :query,
+          placeholder: "Rechercher un logement...",
+          value: params[:query],
+          class: "form-control" %>
+        <%= form.submit "Rechercher", class: "btn btn-secondary" %>
+      </div>
+    <% end %>
 
-  <!-- Titre -->
-  <h1 class="text-2xl font-bold">Liste des logements</h1>
+    <!-- Bouton Ajouter -->
+    <%= link_to "Ajouter un logement", new_lodging_path,
+      class: "btn btn-primary ms-md-3 flex-shrink-0" %>
+  </div>
 
-  <!-- Liste des logements -->
-  <div>
-    <ul class="space-y-4">
+  <section class="mb-5">
+    <h2 class="h3 mb-3">Résultats</h2>
+    <div class="list-group">
       <% if @lodgings.any? %>
         <% @lodgings.each do |lodging| %>
-          <li class="border border-gray-200 rounded-lg p-4 shadow-sm">
-            <h3 class="text-lg font-semibold"><%= lodging[:title] %> — <%= lodging[:price] %> €</h3>
-            <p class="text-gray-600"><%= lodging[:description] %></p>
-          </li>
+          <div class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1"><%= lodging[:title] %></h5>
+              <strong><%= lodging[:price] %> €</strong>
+            </div>
+            <p class="mb-1"><%= lodging[:description] %></p>
+          </div>
         <% end %>
       <% else %>
-        <li class="text-gray-500">Aucun logement trouvé.</li>
+        <div class="alert alert-info">Aucun logement trouvé.</div>
       <% end %>
-    </ul>
-  </div>
+    </div>
+  </section>
 
-  <!-- Bouton pour ajouter -->
-  <div>
-    <%= link_to "Ajouter un logement", new_lodging_path, class: "btn btn-primary" %>
-  </div>
+  <section>
+    <h2 class="h3 mb-3">Top logements populaires</h2>
+    <div class="list-group">
+      <% if @top_lodgings.any? %>
+        <% @top_lodgings.each do |lodging| %>
+          <div class="list-group-item list-group-item-warning">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1"><%= lodging[:title] %></h5>
+              <strong><%= lodging[:price] %> €</strong>
+            </div>
+            <p class="mb-1"><%= lodging[:description] %></p>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="alert alert-warning">Aucun logement populaire.</div>
+      <% end %>
+    </div>
+  </section>
 </div>
