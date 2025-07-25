@@ -54,6 +54,25 @@ class RedisLodgingService
     @redis.zadd("lodgings_popularity", 0, id)
   end
 
+  def text_search(query, limit = 5)
+  results = @redis.call("FT.SEARCH", INDEX_NAME, query, "LIMIT", "0", limit.to_s)
+  count = results.shift
+  lodgings = []
+
+  results.each_slice(2) do |key, fields_array|
+    fields_hash = Hash[*fields_array]
+    lodgings << {
+      key: key,
+      title: fields_hash["title"],
+      description: fields_hash["description"],
+      price: fields_hash["price"]
+    }
+  end
+
+  lodgings
+end
+
+
   # Recherche textuelle simple (fallback)
   def search_similar(query, top_k = 5)
     cache_key = "search:#{query.downcase}"
