@@ -44,6 +44,8 @@ class RedisLodgingService
     @redis.publish("lodgings_channel", payload)
 
     @redis.publish("lodgings_channel", { event: "new_lodging", id: id, title: title }.to_json)
+    ActionCable.server.broadcast("lodgings_channel", { event: "new_lodging", id: id, title: title })
+
 
     # Ajouter au stream pour historique
     @redis.xadd("lodgings_stream", { id: id, title: title, price: price.to_s }, id: "*")
