@@ -1,4 +1,4 @@
-import consumer from "./consumer"
+import consumer from "./consumer";
 
 consumer.subscriptions.create("LodgingsChannel", {
   connected() {
@@ -6,38 +6,37 @@ consumer.subscriptions.create("LodgingsChannel", {
   },
 
   disconnected() {
-    console.log("Disconnected from LodgingsChannel");
+    console.log("❌ Déconnecté de LodgingsChannel");
   },
 
   received(data) {
-  console.log("📩 Nouveau logement reçu :", data);
+    console.log("📩 Événement reçu :", data);
 
-  // alert(`🏠 Nouveau logement : ${data.title}`);
+    const container = document.getElementById("notifications");
+    if (!container) return;
 
-  // Rechercher le container à chaque message reçu
-  
-  const container = document.getElementById("notifications");
-  console.log("container:", container);
+    const { action, lodging } = data; // ✅ Déstructuration propre
+    let message = "";
 
-  if (container) {
+    switch (action) {
+      case "created":
+        message = `🏠 Nouveau logement : ${lodging.title}`;
+        break;
+      case "updated":
+        message = `✏️ Logement mis à jour : ${lodging.title}`;
+        break;
+      case "deleted":
+    message = `🗑️ Logement supprimé : ${data.title}`;
+        break;
+      default:
+        message = `ℹ️ Action inconnue : ${action}`;
+    }
+
     const el = document.createElement("div");
-    el.innerText = `Nouveau logement ajouté : ${data.title}`;
-    el.classList.add(
-    "alert",           // composant alert Bootstrap
-    "alert-success",   // vert, succès
-    "shadow",          // ombre légère
-    "rounded",         // coins arrondis
-    "mb-2",            // marge en bas entre notifications
-    "py-2", "px-3",    // padding vertical & horizontal
-    "text-truncate"   // texte coupé si trop long
-    );
+    el.innerText = message;
+    el.classList.add("alert", "alert-info", "shadow", "rounded", "mb-2", "py-2", "px-3");
     container.prepend(el);
 
     setTimeout(() => el.remove(), 5000);
-  } else {
-    console.warn("Element #notifications introuvable");
   }
-}
-
-
 });

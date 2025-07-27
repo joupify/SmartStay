@@ -1,0 +1,21 @@
+<h1>Recommandations IA</h1>
+
+<%= form_with url: recommend_path, method: :get do %>
+  <%= text_field_tag :query, params[:query], placeholder: "Ex: Loft à Lyon" %>
+  <%= submit_tag "Recommander" %>
+<% end %>
+
+<% if @results.any? %>
+  <h2>Résultats :</h2>
+  <ul>
+    <% @results.each do |lodging| %>
+      <li>
+        <strong><%= lodging[:title] %></strong> -
+        <%= lodging[:description] %> -
+        <%= lodging[:price] %>€
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>Aucun résultat pour l’instant</p>
+<% end %>

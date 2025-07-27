@@ -23,11 +23,12 @@
   <body>
 <!-- À placer en haut de votre application.html.erb -->
 <!-- Dans application.html.erb -->
-<div id="notifications" 
-     style="position: fixed; top: 20px; right: 20px; z-index: 9999; min-width: 300px;"
-     data-turbo-permanent>  <!-- Clé magique ! -->
-</div>
+  <div id="notifications" 
+      style="position: fixed; top: 20px; right: 20px; z-index: 9999; min-width: 300px;"
+      data-turbo-permanent>  <!-- Clé magique ! -->
+  </div>
     <main class="container mx-auto mt-28 px-5 flex">
+      <%= render "shared/navbar" %>
       <%= yield %>
     </main>
   </body>

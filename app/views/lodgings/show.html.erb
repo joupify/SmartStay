@@ -1,0 +1,26 @@
+<div class="container mt-5">
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary bg-gradient text-white py-3">
+      <h2 class="h4 mb-0"><%= @lodging[:title] %></h2>
+    </div>
+    
+    <div class="card-body">
+      <p class="lead mb-4"><%= @lodging[:description] %></p>
+
+      <div class="d-flex align-items-center gap-3 mb-4">
+        <span class="badge bg-info fs-5 p-3">
+          <%= @lodging[:price] %> €
+        </span>
+      </div>
+      
+      <!-- Zone pour les images (à ajouter plus tard) -->
+      <div class="mb-4 border p-3 rounded bg-light">
+        [Vos images iront ici]
+      </div>
+    </div>
+    
+    <div class="card-footer bg-light py-3">
+      <%= link_to "Retour", lodgings_path, class: "btn btn-outline-secondary" %>
+    </div>
+  </div>
+</div>
