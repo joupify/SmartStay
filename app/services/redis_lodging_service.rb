@@ -246,7 +246,7 @@ class RedisLodgingService
     @redis.xadd("lodgings_stream", flat_event, id: "*")
 
     # ✅ Limite à 50 événements max
-    @redis.xtrim("lodgings_stream", "MAXLEN", "~", 50)
+    @redis.xtrim("lodgings_stream", 50, approximate: true)
 
     # Notifications en temps réel
     @redis.publish("lodgings_channel", { "action" => action, "lodging" => lodging_data }.to_json)

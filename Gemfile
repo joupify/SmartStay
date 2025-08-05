@@ -37,8 +37,9 @@ gem "bootsnap", require: false
 # gem "image_processing", "~> 1.2"
 
 group :development, :test do
-  # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
+  gem 'rspec-rails'
+
 
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
@@ -58,7 +59,6 @@ end
 
 gem "redis", "~> 5.4"
 gem "ruby-openai", "~> 8.1"
-gem "bootstrap", "~> 5.3"
 gem "bootstrap", "~> 5.3"
 gem "sassc-rails"
 

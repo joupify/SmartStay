@@ -8,33 +8,34 @@ class Lodging
   attribute :price, :float
   attribute :image_url, :string
 
-
+  validates :id, presence: true
   validates :title, presence: true
+  validates :description, presence: true
   validates :price, numericality: { greater_than_or_equal_to: 0 }
+  validates :image_url, format: { with: URI::DEFAULT_PARSER.make_regexp(%w[http https]), allow_blank: true }
 
-  # Trouve un logement dans Redis
+  # ✅ Trouve un logement dans Redis
   def self.find(id)
-  service = RedisLodgingService.new
-  data = service.find_lodging(id)
-  return nil unless data
+    service = RedisLodgingService.new
+    data = service.find_lodging(id)
+    return nil unless data
 
-  Lodging.new(
-    id: data[:id],           # ici data[:id] au lieu de data[:key]
-    title: data[:title],
-    description: data[:description],
-    price: data[:price],
-image_url: data[:image_url] || data["image_url"]
+    Lodging.new(
+      id: data["id"] || data[:id],
+      title: data["title"] || data[:title],
+      description: data["description"] || data[:description],
+      price: data["price"] || data[:price],
+      image_url: data["image_url"] || data[:image_url]
+    )
+  end
 
-  )
-end
-
-  # Met à jour les attributs en mémoire (pas en Redis)
+  # ✅ Mise à jour en mémoire
   def update(attrs)
     attrs.each { |k, v| send("#{k}=", v) if respond_to?("#{k}=") }
     valid?
   end
 
-  # Retourne un hash compatible avec le service Redis
+  # ✅ Conversion en hash
   def to_h
     {
       id: id,
