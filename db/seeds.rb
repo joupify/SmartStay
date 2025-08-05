@@ -1,5 +1,5 @@
-# db/seeds.rb
 require 'redis'
+require 'securerandom'
 
 redis = Redis.new(host: 'localhost', port: 6380)
 
@@ -8,14 +8,14 @@ keys = redis.keys("lodging:*")
 redis.del(*keys) unless keys.empty?
 
 puts "Insertion des logements de test..."
-
 lodgings = [
-  { id: 1, title: "Appartement cosy Paris", description: "Charmant T2 proche centre", price: 120 },
-  { id: 2, title: "Loft moderne Lyon", description: "Grand espace lumineux", price: 150 },
-  { id: 3, title: "Studio étudiant Bordeaux", description: "Petite surface, bien situé", price: 70 },
-  { id: 4, title: "Villa piscine Nice", description: "Luxueuse villa avec piscine", price: 300 },
-  { id: 5, title: "Chambre simple Marseille", description: "Chambre privée dans colocation", price: 50 }
+  { id: SecureRandom.uuid, title: "Appartement cosy Paris", description: "Charmant T2 proche centre", price: 120, image_url: "https://picsum.photos/seed/paris/400/300" },
+  { id: SecureRandom.uuid, title: "Loft moderne Lyon", description: "Grand espace lumineux", price: 150, image_url: "https://picsum.photos/seed/loft/400/300" },
+  { id: SecureRandom.uuid, title: "Studio étudiant Bordeaux", description: "Petite surface, bien situé", price: 70, image_url: "https://picsum.photos/seed/studio/400/300" },
+  { id: SecureRandom.uuid, title: "Villa piscine Nice", description: "Luxueuse villa avec piscine", price: 300, image_url: "https://picsum.photos/seed/villa/400/300" },
+  { id: SecureRandom.uuid, title: "Chambre simple Marseille", description: "Chambre privée dans colocation", price: 50, image_url: "https://picsum.photos/seed/bedroom/400/300" }
 ]
+
 
 def pack_vector(embedding)
   embedding.pack("f*")
@@ -33,7 +33,8 @@ lodgings.each do |lodging|
     "title" => lodging[:title],
     "description" => lodging[:description],
     "price" => lodging[:price].to_s,
-    "vector" => vector_blob
+    "vector" => vector_blob,
+    "image_url" => lodging[:image_url]
   })
 
   puts "Inserted lodging #{lodging[:id]}: #{lodging[:title]}"

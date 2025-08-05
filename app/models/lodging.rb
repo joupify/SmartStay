@@ -6,6 +6,8 @@ class Lodging
   attribute :title, :string
   attribute :description, :string
   attribute :price, :float
+  attribute :image_url, :string
+
 
   validates :title, presence: true
   validates :price, numericality: { greater_than_or_equal_to: 0 }
@@ -20,7 +22,9 @@ class Lodging
     id: data[:id],           # ici data[:id] au lieu de data[:key]
     title: data[:title],
     description: data[:description],
-    price: data[:price]
+    price: data[:price],
+image_url: data[:image_url] || data["image_url"]
+
   )
 end
 
@@ -36,7 +40,8 @@ end
       id: id,
       title: title,
       description: description,
-      price: price
+      price: price,
+      image_url: image_url
     }
   end
 end

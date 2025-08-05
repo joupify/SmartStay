@@ -1,0 +1,22 @@
+.custom-navbar {
+  background-color: #4a4a4a;
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 1030; 
+
+
+  .nav-link {
+    color: white;
+
+    &.active {
+      color: #ffc107; // Jaune pour lien actif
+      font-weight: bold;
+    }
+  }
+}
+
+
+body {
+  padding-top: 70px; 
+}
+

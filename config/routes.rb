@@ -8,9 +8,11 @@ Rails.application.routes.draw do
 
   root 'lodgings#index'
   resources :lodgings
-  get "/recommend", to: "recommendations#index"
   delete "/lodgings/:id", to: "lodgings#destroy", as: :delete_lodging
-patch "/lodgings/:id", to: "lodgings#update", as: :update_lodging
+  patch "/lodgings/:id", to: "lodgings#update", as: :update_lodging
+  get '/lodgings/:id/similar', to: 'lodgings#similar', as: :similar_lodging
+  get '/dashboard', to: 'dashboard#index', as: :dashboard
+
   
 
 end

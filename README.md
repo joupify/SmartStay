@@ -1,147 +1,252 @@
-# README
+# SmartStay – Redis + AI Challenge
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Rails 7 application for managing lodgings with Redis Stack, real-time notifications via ActionCable, and AI integration (vector search with embeddings).
 
-Things you may want to cover:
+## 🎯 Challenge Goal
 
-- Ruby version
+Store lodgings exclusively in Redis (no SQL database).
 
-- System dependencies
+Real-time notifications for creation, update, and deletion.
 
-- Configuration
+Full-text search with RediSearch.
 
-- Database creation
+AI similarity search using Redis Vector Search + embeddings (currently mock).
 
-- Database initialization
+## ✅ Implemented Features
 
-- How to run the test suite
+- ✔ CRUD for lodgings (stored in Redis)
+- ✔ Real-time broadcasts via ActionCable
+- ✔ User notifications with Bootstrap Toasts
+- ✔ Full-text search via RediSearch
+- ✔ Popularity tracking with Redis ZSET
+- ✔ Event history via Redis Streams
+- ✔ Minimal dashboard: Top popular lodgings + recent events
+- ✔ Persistence enabled (AOF with Docker)
 
-- Services (job queues, cache servers, search engines, etc.)
+## 🔥 Upcoming Features
 
-- Deployment instructions
+- 🔍 AI vector search with real OpenAI embeddings
+- 🧠 AI Assistant for recommendations
+- 📊 Advanced dashboard for analytics
+- ✅ Deployment on Render + Redis Cloud
 
-- ...
+## 🛠 Tech Stack
 
-🏠 SmartStay – Challenge Redis + ActionCable
-Application Rails 7 pour la gestion des logements avec Redis Stack et notifications en temps réel via ActionCable.
+- Ruby: 3.1.3
+- Rails: 7.2.2.1
+- Redis Stack: Search, Vector, Streams
+- ActionCable: Real-time notifications
+- Bootstrap 5: Responsive UI
+- Docker: Redis Stack container
+- AI: OpenAI embeddings (mocked if no key)
 
-✅ Objectif du Challenge
-Stockage des logements exclusivement dans Redis (pas de DB SQL).
+## 🔧 Installation & Setup
 
-Notifications en temps réel lors de l’ajout d’un logement.
+1️⃣ Clone the repo
 
-Intégration de Redis Stack (RediSearch pour la recherche).
-
-Persistance des données Redis avec AOF.
-
-⚡ Fonctionnalités Implémentées
-✔ Ajout de logements via formulaire Rails → stockage dans Redis
-✔ Broadcast en temps réel avec ActionCable
-✔ Notifications utilisateur avec Bootstrap Toasts
-✔ Recherche rapide grâce à RediSearch
-✔ Persistance activée (Append-Only File)
-
-🛠 Stack Technique
-Ruby : 3.1.3
-
-Rails : 7.2.2.1
-
-Redis Stack : latest (avec RediSearch)
-
-ActionCable : WebSockets natif Rails
-
-Bootstrap 5 : UI responsive
-
-Docker : pour Redis Stack
-
-🔧 Installation & Configuration
-1️⃣ Cloner le projet
-bash
-Copier
-Modifier
-git clone https://github.com/toncompte/smartstay.git
+git clone https://github.com/YOUR_GITHUB_USERNAME/smartstay.git
 cd smartstay
-2️⃣ Installer les dépendances
-bash
-Copier
-Modifier
+2️⃣ Install dependencies
+
 bundle install
-3️⃣ Lancer Redis Stack avec persistance
-bash
-Copier
-Modifier
+3️⃣ Run Redis Stack with persistence
+
 docker run -d \
  --name redis-stack \
  -p 6380:6379 \
  -p 8001:8001 \
  -v ~/redis-data:/data \
  redis/redis-stack:latest
-GUI Redis Insight : http://localhost:8001
+Redis Insight GUI: http://localhost:8001
 
-Redis est accessible sur localhost:6380.
+Redis accessible: localhost:6380
 
-4️⃣ Lancer le serveur Rails
-bash
-Copier
-Modifier
+4️⃣ Start Rails server
+
 bin/dev
-Application : http://localhost:3000
+App URL: http://localhost:3000
 
-✅ Vérification rapide (console Rails)
-ruby
-Copier
-Modifier
+✅ Quick Check (Rails console)
+
 service = RedisLodgingService.new
-service.add_lodging("Studio cosy", "Bel studio avec balcon", 600)
+service.save_lodging(id: SecureRandom.uuid, title: "Cozy studio", description: "Nice studio with balcony", price: 600)
 service.list_all_lodgings
-🔍 Recherche avec RediSearch
-Index automatique :
+🔍 Search (RediSearch)
 
-bash
-Copier
-Modifier
-FT.CREATE lodgings_idx ON HASH PREFIX 1 "lodging:" SCHEMA title TEXT description TEXT price NUMERIC
-Requête :
+service.text_search("studio")
+(Index is auto-created if missing)
 
-ruby
-Copier
-Modifier
-service.search("studio")
-📡 Notifications Temps Réel
-Ouvrir 2 navigateurs → Ajouter un logement → Notification instantanée.
+🤖 AI Similar Search
+Currently using mock embeddings if OPENAI_API_KEY is missing.
+Button "Find Similar" triggers semantic search via Redis KNN.
 
-UI avec Bootstrap Toasts :
+📡 Real-time Notifications
+Open 2 browser tabs, add a lodging → instant notification (via ActionCable)
 
-html
-Copier
-Modifier
+UI (Bootstrap Toast container):
 
 <div id="notifications"
      class="toast-container position-fixed top-0 end-0 p-3"
      data-turbo-permanent>
 </div>
-✅ Persistance Redis
-Volume Docker : ~/redis-data:/data
 
-Activer AOF :
+📊 Dashboard
+Total Lodgings
 
-bash
-Copier
-Modifier
+Top Popular Lodgings (via ZSET)
+
+Recent Events (via Redis Streams)
+
+✅ Redis Persistence
+Enable AOF:
+
 docker exec -it redis-stack redis-cli CONFIG SET appendonly yes
 docker exec -it redis-stack redis-cli CONFIG REWRITE
-🖼 Screenshot Exemple
-(capture des notifications temps réel ici)
+📸 Screenshots
+See screenshots in the French section below.
 
-📂 Structure du Code
-app/services/redis_lodging_service.rb : gestion Redis + recherche
+✅ Next Steps
+Switch from mock embeddings → real OpenAI API
 
-app/channels/lodgings_channel.rb : ActionCable
+Deployment on Render + Redis Cloud
 
-app/javascript/channels/lodgings_channel.js : réception & UI toast
+Add analytics (stream aggregation)
 
-✅ Étapes restantes
-(Optionnel) Ajouter suppression/édition dans Redis
+🇫🇷 Version Française
+Application Rails 7 pour la gestion des logements avec Redis Stack, notifications en temps réel via ActionCable, et intégration IA (recherche vectorielle avec embeddings).
 
-(Optionnel) Déploiement (Heroku + Redis Cloud)
+🎯 Objectif du Challenge
+Stocker les logements exclusivement dans Redis (sans base SQL)
+Notifications en temps réel (création, mise à jour, suppression)
+Recherche textuelle avec RediSearch
+Recherche similaire via Redis Vector Search + embeddings IA (mock actuellement)
+
+✅ Fonctionnalités Implémentées
+✔ CRUD complet (logements stockés dans Redis)
+
+✔ Diffusion temps réel avec ActionCable
+
+✔ Notifications utilisateur (Bootstrap Toasts)
+
+✔ Recherche textuelle rapide grâce à RediSearch
+
+✔ Suivi de popularité avec Redis ZSET
+
+✔ Historique des événements avec Redis Streams
+
+✔ Mini-dashboard : Top logements + événements récents
+
+✔ Persistance activée (AOF avec Docker)
+
+🔥 Fonctionnalités à venir
+🔍 Recherche vectorielle IA avec embeddings OpenAI réels
+
+🧠 Assistant IA pour recommandations
+
+📊 Tableau de bord avancé pour les statistiques
+
+✅ Déploiement sur Render + Redis Cloud
+
+🛠 Stack Technique
+Ruby : 3.1.3
+
+Rails : 7.2.2.1
+
+Redis Stack : Search, Vector, Streams
+
+ActionCable : Notifications temps réel
+
+Bootstrap 5 : Interface responsive
+
+Docker : Conteneur Redis Stack
+
+IA : OpenAI embeddings (mock si clé absente)
+
+🔧 Installation & Configuration
+1️⃣ Cloner le projet
+
+git clone https://github.com/VOTRE_UTILISATEUR/smartstay.git
+cd smartstay
+2️⃣ Installer les dépendances
+
+bundle install
+3️⃣ Lancer Redis Stack avec persistance
+
+docker run -d \
+ --name redis-stack \
+ -p 6380:6379 \
+ -p 8001:8001 \
+ -v ~/redis-data:/data \
+ redis/redis-stack:latest
+Interface Redis Insight : http://localhost:8001
+Redis accessible : localhost:6380
+
+4️⃣ Démarrer le serveur Rails
+
+bin/dev
+Application : http://localhost:3000
+
+✅ Vérification rapide (console Rails)
+
+service = RedisLodgingService.new
+service.save_lodging(id: SecureRandom.uuid, title: "Studio cosy", description: "Bel studio avec balcon", price: 600)
+service.list_all_lodgings
+🔍 Recherche (RediSearch)
+
+service.text_search("studio")
+(L’index est créé automatiquement au démarrage si absent)
+
+🤖 Recherche similaire IA
+Actuellement, embeddings mock si OPENAI_API_KEY non défini.
+Bouton "Voir similaires" → recherche sémantique (KNN Redis).
+
+📡 Notifications Temps Réel
+Ouvrir 2 navigateurs, ajouter un logement → notification instantanée (via ActionCable)
+
+UI (container Toast Bootstrap) :
+
+<div id="notifications"
+     class="toast-container position-fixed top-0 end-0 p-3"
+     data-turbo-permanent>
+</div>
+
+📊 Dashboard  
+Nombre total de logements
+
+Top logements populaires (via ZSET)
+
+Événements récents (via Redis Streams)
+
+✅ Persistance Redis
+Activer AOF :
+
+docker exec -it redis-stack redis-cli CONFIG SET appendonly yes
+docker exec -it redis-stack redis-cli CONFIG REWRITE
+
+### 📸 Captures d’écran
+
+---
+
+📌 Page d’accueil (CRUD + notifications temps réel)
+![Home](docs/screenshots/home.png)  
+![Notifications](docs/screenshots/notif.png)
+
+📌 Recherche textuelle & IA (Bouton Voir similaires)  
+![Search](docs/screenshots/search.png)
+
+📌 Dashboard (Top logements + événements récents)  
+![Dashboard](docs/screenshots/dashboard.png)
+
+🔥 Fonctionnalités à venir
+
+🔍 Recherche vectorielle IA avec de vrais embeddings OpenAI
+
+🧠 Assistant IA pour recommandations
+
+📊 Tableau de bord avancé pour les statistiques
+
+✅ Déploiement sur Render + Redis Cloud
+
+```
+
+```

@@ -3,17 +3,33 @@ class LodgingsController < ApplicationController
   before_action :set_lodging, only: [:edit, :update, :destroy]
 
   def index
+  @service = RedisLodgingService.new
 
-    if params[:query].present?
-      @lodgings = @service.text_search(params[:query])
-    else
-@lodgings = @service.list_all_lodgings.reject { |l| l[:id].blank? }
+  if params[:query].present?
+    # Appel direct de la méthode du service
+    search_results = @service.text_search(params[:query])
+    
+    # Formatage des résultats pour la vue
+    @lodgings = search_results.map do |result|
+      {
+        id: result[:key]&.split(':').last, # Extraction de l'ID
+        title: result[:title],
+        description: result[:description],
+        price: result[:price]
+      }
     end
-    @top_lodgings = @service.top_popular_lodgings
+  else
+    @lodgings = @service.list_all_lodgings
   end
+
+  # Récupération des tops logements
+  @top_lodgings = @service.top_popular_lodgings
+end
 
   def show
     @lodging = @service.find_lodging(params[:id])
+    @service.increment_popularity("lodging:#{params[:id]}") if @lodging
+
     if @lodging.nil?
       redirect_to lodgings_path, alert: "Logement non trouvé."
     end
@@ -68,6 +84,13 @@ end
   end
 end
 
+  def similar
+    @service = RedisLodgingService.new
+    lodging = @service.find_lodging(params[:id])
+    @lodgings = @service.search_similar("#{lodging[:title]} #{lodging[:description]}")
+  end
+
+
 
   private
 
@@ -80,7 +103,7 @@ end
   end
 
   def lodging_params
-    params.require(:lodging).permit(:title, :description, :price)
+    params.require(:lodging).permit(:title, :description, :price, :image_url)
   end
 
 

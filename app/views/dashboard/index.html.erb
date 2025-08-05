@@ -1,0 +1,65 @@
+<div class="container mt-4">
+  <h1 class="mb-4">Dashboard</h1>
+  
+  <div class="row g-4">
+    <div class="col-md-3">
+      <div class="card shadow-sm text-center">
+        <div class="card-body">
+          <h5>Total Lodgings</h5>
+          <p class="display-6"><%= @total_lodgings %></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card shadow-sm text-center">
+        <div class="card-body">
+          <h5>Events in Stream</h5>
+          <p class="display-6"><%= @stream_count %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="mt-5">Top Popular Lodgings</h3>
+  <ul class="list-group mb-4">
+    <% @top_lodgings.each do |lodging| %>
+      <li class="list-group-item">
+        <%= lodging[:title] %> - <%= lodging[:price] %> €
+      </li>
+    <% end %>
+  </ul>
+
+  <h3>Recent Events</h3>
+<ul class="list-group mb-4">
+  <% @recent_events.each do |event| %>
+    <% data = event[1].transform_keys(&:to_s) %>
+    <% action = data["action"] || "unknown" %>
+    <% title = data["title"] || "(no title)" %>
+    <% price = data["price"] %>
+
+    <% badge_class, icon, label = case action
+      when "created"
+        ["badge bg-success", "✔", "Created"]
+      when "updated"
+        ["badge bg-primary", "✏️", "Updated"]
+      when "deleted"
+        ["badge bg-danger", "✖", "Deleted"]
+      else
+        ["badge bg-secondary", "❓", action.capitalize]
+      end %>
+
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <span>
+        <span class="<%= badge_class %> me-2"><%= icon %> <%= label %></span>
+        <strong><%= title %></strong>
+        <% if price.present? %>
+          - <%= price %> €
+        <% end %>
+      </span>
+      <small class="text-muted"><%= event[0] %></small> <!-- ID du stream -->
+    </li>
+  <% end %>
+</ul>
+
+</div>
