@@ -1,7 +1,5 @@
 <div class="container mt-4 mb-5">
   <h1 class="h2 mb-4">Liste des logements</h1>
-  <%= image_tag "https://source.unsplash.com/400x300/?villa,pool", alt: "Test Image" %>
-
 
   <div class="d-flex flex-column flex-md-row align-items-center justify-content-between gap-3 mb-4">
     <!-- Formulaire de recherche -->
@@ -33,13 +31,16 @@
 
           <div class="col">
             <div class="card h-100 shadow-sm">
+              <!-- Image en haut de la carte -->
+              <% if lodging[:image_url].present? %>
+                <div class="card-img-container" style="height: 200px; overflow: hidden;">
+                  <%= image_tag lodging[:image_url], class: "card-img-top img-fluid h-100 w-100 object-fit-cover", alt: lodging[:title] %>
+                </div>
+              <% end %>
+
               <div class="card-header bg-white">
                 <div class="d-flex justify-content-between align-items-center">
                   <h5 class="card-title mb-0"><%= lodging[:title] %></h5>
-    <%= image_tag lodging[:image_url], class: "card-img-top", alt: lodging[:title] if lodging[:image_url].present? %>
-<%= image_tag "https://via.placeholder.com/400x300.png?text=No+Image", alt: "Placeholder" %>
-
-
                   <span class="badge bg-primary rounded-pill"><%= lodging[:price] %> €</span>
                 </div>
               </div>
@@ -48,7 +49,6 @@
               </div>
               <div class="card-footer bg-white border-top-0">
                 <div class="d-flex justify-content-end gap-2">
-
                   <%= link_to lodging_path(lodging[:id]), class: "btn btn-sm btn-outline-primary", title: "View" do %>
                     <i class="bi bi-eye"></i> 
                   <% end %>
@@ -64,7 +64,6 @@
                   <%= button_to delete_lodging_path(lodging[:id]), method: :delete, data: { confirm: "Confirmer la suppression ?" }, class: "btn btn-sm btn-outline-danger", title: "delete" do %>
                     <i class="bi bi-trash"></i>
                   <% end %>
-
                 </div>
               </div>
             </div>
@@ -84,10 +83,15 @@
         <% @top_lodgings.each do |lodging| %>
           <div class="col">
             <div class="card h-100 border-warning shadow-sm">
+              <!-- Image pour les logements populaires -->
+              <% if lodging[:image_url].present? %>
+                <div class="card-img-container" style="height: 200px; overflow: hidden;">
+                  <%= image_tag lodging[:image_url], class: "card-img-top img-fluid h-100 w-100 object-fit-cover", alt: lodging[:title] %>
+                </div>
+              <% end %>
+
               <div class="card-header bg-warning bg-opacity-10">
                 <div class="d-flex justify-content-between align-items-center">
-                      <%= image_tag lodging[:image_url], class: "card-img-top", alt: lodging[:title] if lodging[:image_url].present? %>
-
                   <h5 class="card-title mb-0"><%= lodging[:title] %></h5>
                   <span class="badge bg-warning text-dark rounded-pill"><%= lodging[:price] %> €</span>
                 </div>

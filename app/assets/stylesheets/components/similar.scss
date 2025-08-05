@@ -1,0 +1,26 @@
+
+  .card-img-container {
+    position: relative;
+    transition: all 0.3s ease;
+  }
+  
+  .card:hover .card-img-container {
+    transform: scale(1.02);
+  }
+  
+  .card {
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .card:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+  }
+  
+  .btn-warning {
+    transition: all 0.2s ease;
+  }
+  
+  .btn-warning:hover {
+    background-color: #ffca2c;
+    border-color: #ffca2c;
+  }

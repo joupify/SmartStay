@@ -1,36 +1,53 @@
-  <section class="mt-5">
-    <h2 class="h3 mb-3">logements similaires</h2>
+<section class="mt-5">
+  <h2 class="h3 mb-4">Logements similaires</h2>
+  
   <% if @lodgings.present? %>
-      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        <% @lodgings.each do |lodging| %>
-          <div class="col">
-            <div class="card h-100 border-warning shadow-sm">
-              <div class="card-header bg-warning bg-opacity-10">
-                <div class="d-flex justify-content-between align-items-center">
-                  <h5 class="card-title mb-0"><%= lodging[:title] %></h5>
-                  <span class="badge bg-warning text-dark rounded-pill"><%= lodging[:price] %> €</span>
-                </div>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      <% @lodgings.each do |lodging| %>
+        <div class="col">
+          <div class="card h-100 border-warning shadow-sm">
+            <!-- Image du logement -->
+            <% if lodging[:image_url].present? %>
+              <div class="card-img-container" style="height: 200px; overflow: hidden;">
+                
+                <%= image_tag lodging[:image_url], class: "card-img-top img-fluid h-100 w-100 object-fit-cover", alt: lodging[:title] %>
               </div>
-              <div class="card-body">
-                <p class="card-text"><%= lodging[:description] %></p>
-                <div class="d-flex align-items-center text-warning">
-                  <i class="bi bi-star-fill me-1"></i>
-                  <i class="bi bi-star-fill me-1"></i>
-                  <i class="bi bi-star-fill me-1"></i>
-                  <i class="bi bi-star-fill me-1"></i>
-                  <i class="bi bi-star-half"></i>
-                  <small class="text-muted ms-2">4.5</small>
-                </div>
+            <% else %>
+              <div class="card-img-container bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                <i class="bi bi-image text-muted" style="font-size: 2rem;"></i>
               </div>
-              <div class="card-footer bg-transparent">
-                <%= link_to "Réserver maintenant", lodging_path(lodging[:key]), class: "btn btn-warning w-100" %>
+            <% end %>
+
+            <div class="card-header bg-warning bg-opacity-10">
+              <div class="d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0"><%= lodging[:title] %></h5>
+                <span class="badge bg-warning text-dark rounded-pill"><%= lodging[:price] %> €</span>
+              </div>
+            </div>
+            
+            <div class="card-body">
+              <p class="card-text"><%= lodging[:description] %></p>
+              <div class="d-flex align-items-center text-warning mb-3">
+                <i class="bi bi-star-fill me-1"></i>
+                <i class="bi bi-star-fill me-1"></i>
+                <i class="bi bi-star-fill me-1"></i>
+                <i class="bi bi-star-fill me-1"></i>
+                <i class="bi bi-star-half"></i>
+                <small class="text-muted ms-2">4.5</small>
+              </div>
+              
+              <!-- Boutons d'action -->
+              <div class="d-flex gap-2">
+                <%= link_to "Voir", lodging_path(lodging[:id]), class: "btn btn-sm btn-outline-warning flex-grow-1" %>
+                <%= link_to "Réserver", lodging_path(lodging[:id]), class: "btn btn-sm btn-warning flex-grow-1" %>
               </div>
             </div>
           </div>
-        <% end %>
-      </div>
-    <% else %>
-      <div class="alert alert-warning">Aucun logement similaire trouvé.</div>
-    <% end %>
-  </section>
-</div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="alert alert-warning">Aucun logement similaire trouvé.</div>
+  <% end %>
+  
+</section>

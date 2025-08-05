@@ -1,0 +1,16 @@
+
+  /* Animation pour l'image */
+  .rounded img {
+    transition: transform 0.3s ease;
+  }
+  .rounded:hover img {
+    transform: scale(1.02);
+  }
+  
+  /* Style pour les badges */
+  .badge {
+    transition: all 0.2s ease;
+  }
+  .badge:hover {
+    filter: brightness(95%);
+  }

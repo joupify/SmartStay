@@ -5,22 +5,68 @@
     </div>
     
     <div class="card-body">
-      <p class="lead mb-4"><%= @lodging[:description] %></p>
+      <div class="row">
+        <!-- Contenu à gauche -->
+        <div class="col-md-7 order-2 order-md-1">
+          <p class="lead mb-4"><%= @lodging[:description] %></p>
 
-      <div class="d-flex align-items-center gap-3 mb-4">
-        <span class="badge bg-info fs-5 p-3">
-          <%= @lodging[:price] %> €
-        </span>
-      </div>
-      
-      <!-- Zone pour les images (à ajouter plus tard) -->
-      <div class="mb-4 border p-3 rounded bg-light">
-        [Vos images iront ici]
+          <div class="d-flex align-items-center gap-3 mb-4">
+            <span class="badge bg-info fs-5 p-3">
+              <%= @lodging[:price] %> €
+            </span>
+            <span class="badge bg-success fs-6">
+              <i class="bi bi-star-fill"></i> 4.5
+            </span>
+          </div>
+          
+          <!-- Détails supplémentaires -->
+          <div class="mb-4">
+            <h3 class="h5 mb-3">Caractéristiques</h3>
+            <div class="d-flex flex-wrap gap-2">
+              <span class="badge bg-light text-dark border">
+                <i class="bi bi-people-fill"></i> 2 personnes
+              </span>
+              <span class="badge bg-light text-dark border">
+                <i class="bi bi-door-open"></i> 1 chambre
+              </span>
+              <span class="badge bg-light text-dark border">
+                <i class="bi bi-geo-alt"></i> Centre-ville
+              </span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Image à droite -->
+        <div class="col-md-5 order-1 order-md-2 mb-4 mb-md-0">
+          <% if @lodging[:image_url].present? %>
+            <div class="rounded overflow-hidden shadow-sm" style="height: 300px;">
+              <%= image_tag @lodging[:image_url], 
+                  class: "img-fluid h-100 w-100 object-fit-cover", 
+                  alt: @lodging[:title] %>
+            </div>
+          <% else %>
+            <div class="bg-light d-flex align-items-center justify-content-center" style="height: 300px;">
+              <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
+            </div>
+          <% end %>
+          
+          <!-- Mini-galerie (optionnelle) -->
+          <div class="d-flex gap-2 mt-3">
+            <% 3.times do %>
+              <div class="rounded overflow-hidden" style="width: 80px; height: 60px;">
+                <%= image_tag @lodging[:image_url], 
+                    class: "img-fluid h-100 w-100 object-fit-cover", 
+                    alt: "Miniature" if @lodging[:image_url].present? %>
+              </div>
+            <% end %>
+          </div>
+        </div>
       </div>
     </div>
     
-    <div class="card-footer bg-light py-3">
+    <div class="card-footer bg-light py-3 d-flex justify-content-between">
       <%= link_to "Retour", lodgings_path, class: "btn btn-outline-secondary" %>
+      <%= link_to "Réserver", "#", class: "btn btn-primary px-4" %>
     </div>
   </div>
 </div>

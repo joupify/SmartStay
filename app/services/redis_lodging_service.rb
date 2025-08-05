@@ -1,7 +1,8 @@
-class RedisLodgingService
-  require 'digest'
+require 'digest'
 
+class RedisLodgingService
   INDEX_NAME = "lodgings_idx"
+  EMBEDDING_CACHE_TTL = 24.hours.to_i
 
   def initialize(redis: REDIS, openai: OPENAI_CLIENT)
     @redis = redis
@@ -22,7 +23,7 @@ class RedisLodgingService
         "title", "TEXT",
         "description", "TEXT",
         "price", "NUMERIC",
-        "image_url", "TEXT",  
+        "image_url", "TEXT",
         "vector", "VECTOR", "FLAT", "6",
         "TYPE", "FLOAT32", "DIM", "1536", "DISTANCE_METRIC", "COSINE"
       )
@@ -30,7 +31,7 @@ class RedisLodgingService
   end
 
   # ✅ Ajout d’un logement
-def save_lodging(id:, title:, description:, price:, image_url: nil)
+  def save_lodging(id:, title:, description:, price:, image_url: nil)
     key = "lodging:#{id}"
 
     embedding = generate_embedding("#{title} #{description}")
@@ -42,7 +43,6 @@ def save_lodging(id:, title:, description:, price:, image_url: nil)
       "price" => price.to_s,
       "vector" => vector_blob,
       "image_url" => image_url || "https://source.unsplash.com/400x300/?apartment"
-
     })
 
     @redis.zadd("lodgings_popularity", 0, key)
@@ -64,8 +64,7 @@ def save_lodging(id:, title:, description:, price:, image_url: nil)
       title: fields["title"],
       description: fields["description"],
       price: fields["price"],
-      image_url: fields["image_url"]  # <-- Ajouté ici
-
+      image_url: fields["image_url"]
     }
   end
 
@@ -115,7 +114,6 @@ def save_lodging(id:, title:, description:, price:, image_url: nil)
         description: fields["description"],
         price: fields["price"],
         image_url: fields["image_url"]
-
       }
     end
   end
@@ -130,6 +128,7 @@ def save_lodging(id:, title:, description:, price:, image_url: nil)
       fields_hash = Hash[*fields_array]
       lodgings << {
         key: key,
+        id: key.sub("lodging:", ""),
         title: fields_hash["title"],
         description: fields_hash["description"],
         price: fields_hash["price"],
@@ -149,7 +148,7 @@ def save_lodging(id:, title:, description:, price:, image_url: nil)
       "FT.SEARCH", INDEX_NAME, query_str,
       "PARAMS", "2", "vec", vector_blob,
       "SORTBY", "vector_score",
-      "RETURN", "4", "title", "description", "price", "vector_score",
+      "RETURN", "5", "title", "description", "price", "image_url", "vector_score",
       "DIALECT", "2",
       "LIMIT", "0", top_k.to_s
     )
@@ -160,9 +159,11 @@ def save_lodging(id:, title:, description:, price:, image_url: nil)
       fields_hash = Hash[*fields_array]
       lodgings << {
         key: key,
+        id: key.sub("lodging:", ""),
         title: fields_hash["title"],
         description: fields_hash["description"],
         price: fields_hash["price"],
+        image_url: fields_hash["image_url"],
         vector_score: fields_hash["vector_score"]
       }
     end
@@ -181,11 +182,14 @@ def save_lodging(id:, title:, description:, price:, image_url: nil)
       data = @redis.hgetall(key)
       next if data.empty?
 
+      id = key.sub("lodging:", "")
       lodgings << {
+        id: id,
         key: key,
         title: data["title"],
         description: data["description"],
-        price: data["price"]
+        price: data["price"],
+        image_url: data["image_url"]
       }
     end
     lodgings
@@ -195,26 +199,57 @@ def save_lodging(id:, title:, description:, price:, image_url: nil)
 
   # ✅ Mock embedding si OpenAI absent
   def generate_embedding(text)
-    if ENV["OPENAI_API_KEY"].nil? || @openai.nil?
-      return Array.new(1536, text.include?("paris") ? 0.9 : 0.1)
-    end
+    return mock_embedding(text) if should_mock?
 
+    cached_embedding = get_cached_embedding(text)
+    return cached_embedding if cached_embedding
+
+    generate_and_cache_embedding(text)
+  rescue => e
+    Rails.logger.error("Embedding generation failed: #{e}")
+    mock_embedding(text)
+  end
+
+  def should_mock?
+    ENV["OPENAI_API_KEY"].nil? || @openai.nil?
+  end
+
+  def mock_embedding(text)
+    Array.new(1536, text.downcase.include?("paris") ? 0.9 : 0.1)
+  end
+
+  def get_cached_embedding(text)
+    cache_key = "embedding:#{Digest::SHA256.hexdigest(text)}"
+    cached = @redis.get(cache_key)
+    Marshal.load(cached) rescue nil
+  end
+
+  def generate_and_cache_embedding(text)
     response = @openai.embeddings(parameters: {
       model: "text-embedding-3-small",
       input: text
     })
-    response["data"][0]["embedding"]
-  rescue
-    Array.new(1536, 0.1)
+
+    embedding = response["data"][0]["embedding"]
+    cache_key = "embedding:#{Digest::SHA256.hexdigest(text)}"
+    @redis.setex(cache_key, EMBEDDING_CACHE_TTL, Marshal.dump(embedding))
+
+    embedding
   end
 
   # ✅ Broadcast unifié (Streams + Pub/Sub + ActionCable)
- def broadcast(action, data)
-  lodging_data = data.transform_keys(&:to_s)
-  flat_event = lodging_data.merge("action" => action)
-  @redis.xadd("lodgings_stream", flat_event, id: "*")
-  @redis.publish("lodgings_channel", { "action" => action, "lodging" => lodging_data }.to_json)
-  ActionCable.server.broadcast("lodgings_channel", { "action" => action, "lodging" => lodging_data })
-end
+  def broadcast(action, data)
+    lodging_data = data.transform_keys(&:to_s)
+    flat_event = lodging_data.merge("action" => action)
 
+    # Ajout de l'événement dans le Stream
+    @redis.xadd("lodgings_stream", flat_event, id: "*")
+
+    # ✅ Limite à 50 événements max
+    @redis.xtrim("lodgings_stream", "MAXLEN", "~", 50)
+
+    # Notifications en temps réel
+    @redis.publish("lodgings_channel", { "action" => action, "lodging" => lodging_data }.to_json)
+    ActionCable.server.broadcast("lodgings_channel", { "action" => action, "lodging" => lodging_data })
+  end
 end
