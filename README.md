@@ -78,8 +78,9 @@ service.text_search("studio")
 
 🤖 AI Similar Search
 
-Currently using mock embeddings if OPENAI_API_KEY is missing.
-Button "Find Similar" triggers semantic search via Redis KNN.
+Uses **OpenAI embeddings** (model: `text-embedding-3-small`) when `OPENAI_API_KEY` is set.
+Falls back to mock embeddings only if no API key is provided.
+Button **"Find Similar"** triggers semantic search via Redis Vector Search (KNN).
 
 📡 Real-time Notifications
 
@@ -124,6 +125,18 @@ Watch the full demo with subtitles:
 ## 📄 License
 
 This project is licensed under the [MIT License](LICENSE).
+
+## 👩‍💻 Author
+
+**Malika (joupify)**  
+[GitHub](https://github.com/joupify)
+
+[![DEV Post](https://img.shields.io/badge/DEV-Read%20Article-black?logo=dev.to)](https://dev.to/joupify/smartstay-redis-ai-challenge) <!-- Update link after publishing -->
+
+## 🤝 Contributing
+
+Contributions are welcome!  
+Feel free to fork the repo and submit a Pull Request.
 
 ## 🇫🇷 Version Française
 
@@ -179,7 +192,7 @@ IA : OpenAI embeddings (mock si clé absente)
 🔧 Installation & Configuration
 1️⃣ Cloner le projet
 
-git clone https://github.com/VOTRE_UTILISATEUR/smartstay.git
+git clone https://github.com/joupify/smartstay.git
 cd smartstay
 2️⃣ Installer les dépendances
 
@@ -211,8 +224,10 @@ service.text_search("studio")
 (L’index est créé automatiquement au démarrage si absent)
 
 🤖 Recherche similaire IA
-Actuellement, embeddings mock si OPENAI_API_KEY non défini.
-Bouton "Voir similaires" → recherche sémantique (KNN Redis).
+
+Utilise **les embeddings OpenAI** (modèle : `text-embedding-3-small`) si `OPENAI_API_KEY` est défini.  
+Revient à des embeddings simulés uniquement si aucune clé API n’est disponible.  
+Le bouton **"Voir similaires"** déclenche une recherche sémantique via Redis Vector Search (KNN).
 
 📡 Notifications Temps Réel
 Ouvrir 2 navigateurs, ajouter un logement → notification instantanée (via ActionCable)
@@ -250,6 +265,8 @@ docker exec -it redis-stack redis-cli CONFIG REWRITE
 
 📌 Dashboard (Top logements + événements récents)  
 ![Dashboard](docs/screenshots/dashboard.png)
+
+---
 
 🔥 Fonctionnalités à venir
 
