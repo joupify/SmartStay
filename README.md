@@ -44,11 +44,11 @@ AI similarity search using Redis Vector Search + embeddings (currently mock).
 
 1️⃣ Clone the repo
 
-git clone https://github.com/YOUR_GITHUB_USERNAME/smartstay.git
-cd smartstay
+git clone https://github.com/joupify/smartstay.git  
+cd smartstay  
 2️⃣ Install dependencies
 
-bundle install
+bundle install  
 3️⃣ Run Redis Stack with persistence
 
 docker run -d \
@@ -70,16 +70,19 @@ App URL: http://localhost:3000
 service = RedisLodgingService.new
 service.save_lodging(id: SecureRandom.uuid, title: "Cozy studio", description: "Nice studio with balcony", price: 600)
 service.list_all_lodgings
+
 🔍 Search (RediSearch)
 
 service.text_search("studio")
 (Index is auto-created if missing)
 
 🤖 AI Similar Search
+
 Currently using mock embeddings if OPENAI_API_KEY is missing.
 Button "Find Similar" triggers semantic search via Redis KNN.
 
 📡 Real-time Notifications
+
 Open 2 browser tabs, add a lodging → instant notification (via ActionCable)
 
 UI (Bootstrap Toast container):
@@ -90,18 +93,20 @@ UI (Bootstrap Toast container):
 </div>
 
 📊 Dashboard
+
 Total Lodgings
 
 Top Popular Lodgings (via ZSET)
 
 Recent Events (via Redis Streams)
 
-✅ Redis Persistence
+✅ Redis Persistence  
 Enable AOF:
 
 docker exec -it redis-stack redis-cli CONFIG SET appendonly yes
 docker exec -it redis-stack redis-cli CONFIG REWRITE
-📸 Screenshots
+
+📸 Screenshots  
 See screenshots in the French section below.
 
 ✅ Next Steps
