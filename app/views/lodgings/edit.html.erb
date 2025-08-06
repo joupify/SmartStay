@@ -1,8 +1,5 @@
 <div class="container mt-5">
   <h1 class="mb-4">Editer le logement</h1>
-
-
-
 <%= form_with model: @lodging, url: lodging_path(@lodging.id), method: :patch, local: true do |form| %>
     <% if @lodging&.errors&.any? %>
       <div class="alert alert-danger mb-4">

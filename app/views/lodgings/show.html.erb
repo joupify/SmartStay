@@ -6,7 +6,7 @@
     
     <div class="card-body">
       <div class="row">
-        <!-- Contenu à gauche -->
+        <!-- Left content -->
         <div class="col-md-7 order-2 order-md-1">
           <p class="lead mb-4"><%= @lodging[:description] %></p>
 
@@ -18,8 +18,8 @@
               <i class="bi bi-star-fill"></i> 4.5
             </span>
           </div>
-          
-          <!-- Détails supplémentaires -->
+
+          <!-- Additional details -->
           <div class="mb-4">
             <h3 class="h5 mb-3">Caractéristiques</h3>
             <div class="d-flex flex-wrap gap-2">
@@ -36,7 +36,7 @@
           </div>
         </div>
         
-        <!-- Image à droite -->
+        <!-- Right content (image and mini-gallery) -->
         <div class="col-md-5 order-1 order-md-2 mb-4 mb-md-0">
           <% if @lodging[:image_url].present? %>
             <div class="rounded overflow-hidden shadow-sm" style="height: 300px;">
@@ -49,8 +49,8 @@
               <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
             </div>
           <% end %>
-          
-          <!-- Mini-galerie (optionnelle) -->
+
+          <!-- Mini-gallery -->
           <div class="d-flex gap-2 mt-3">
             <% 3.times do %>
               <div class="rounded overflow-hidden" style="width: 80px; height: 60px;">
@@ -65,8 +65,8 @@
     </div>
     
     <div class="card-footer bg-light py-3 d-flex justify-content-between">
-      <%= link_to "Retour", lodgings_path, class: "btn btn-outline-secondary" %>
-      <%= link_to "Réserver", "#", class: "btn btn-primary px-4" %>
+      <%= link_to "Back to List", lodgings_path, class: "btn btn-outline-secondary" %>
+      <%= link_to "Book Now", "#", class: "btn btn-primary px-4" %>
     </div>
   </div>
 </div>

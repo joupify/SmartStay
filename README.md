@@ -1,4 +1,4 @@
-# SmartStay – Redis + AI Challenge
+# SmartStay – Redis + AI Challenge [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 Rails 7 application for managing lodgings with Redis Stack, real-time notifications via ActionCable, and AI integration (vector search with embeddings).
 
@@ -63,7 +63,6 @@ Redis accessible: localhost:6380
 
 4️⃣ Start Rails server
 
-bin/dev
 App URL: http://localhost:3000
 
 ✅ Quick Check (Rails console)
@@ -112,7 +111,17 @@ Deployment on Render + Redis Cloud
 
 Add analytics (stream aggregation)
 
-🇫🇷 Version Française
+## 🎥 Demo Video
+
+Watch the full demo with subtitles:  
+[▶ Watch on Kapwing](https://www.kapwing.com/videos/68938bf746b7eb3c758179cb)
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
+
+## 🇫🇷 Version Française
+
 Application Rails 7 pour la gestion des logements avec Redis Stack, notifications en temps réel via ActionCable, et intégration IA (recherche vectorielle avec embeddings).
 
 🎯 Objectif du Challenge
@@ -247,6 +256,11 @@ docker exec -it redis-stack redis-cli CONFIG REWRITE
 
 ✅ Déploiement sur Render + Redis Cloud
 
-```
+## 🎥 Demo Video
 
-```
+Watch the full demo with subtitles:  
+[▶ Watch on Kapwing](https://www.kapwing.com/videos/68938bf746b7eb3c758179cb)
+
+## 📄 Licence
+
+Ce projet est sous licence [MIT](LICENSE).

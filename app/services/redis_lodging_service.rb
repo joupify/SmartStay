@@ -1,4 +1,4 @@
-require 'digest'
+require "digest"
 
 class RedisLodgingService
   INDEX_NAME = "lodgings_idx"
@@ -10,7 +10,7 @@ class RedisLodgingService
     create_index_if_not_exists
   end
 
-  # ✅ Crée l'index RediSearch si inexistant
+  # ✅ create_index_if_not_exists
   def create_index_if_not_exists
     begin
       @redis.call("FT.INFO", INDEX_NAME)
@@ -30,7 +30,7 @@ class RedisLodgingService
     end
   end
 
-  # ✅ Ajout d’un logement
+  # ✅ Add Lodging
   def save_lodging(id:, title:, description:, price:, image_url: nil)
     key = "lodging:#{id}"
 
@@ -53,7 +53,7 @@ class RedisLodgingService
     true
   end
 
-  # ✅ Lire un logement
+  # ✅ Read a lodging
   def find_lodging(id)
     key = "lodging:#{id}"
     fields = @redis.hgetall(key)
@@ -72,7 +72,7 @@ class RedisLodgingService
     find_lodging(id)
   end
 
-  # ✅ Mise à jour
+  # ✅ Update Lodging
   def update_lodging(id, attrs)
     key = "lodging:#{id}"
     flat_attrs = attrs.to_h.to_a.flatten.map(&:to_s)
@@ -86,7 +86,7 @@ class RedisLodgingService
     true
   end
 
-  # ✅ Suppression
+  # ✅ Delete Lodging
   def delete_lodging(id)
     key = "lodging:#{id}"
     lodging_data = @redis.hgetall(key)
@@ -102,7 +102,7 @@ class RedisLodgingService
     true
   end
 
-  # ✅ Liste complète
+  # ✅ List all lodgings
   def list_all_lodgings
     keys = @redis.keys("lodging:*")
     keys.map do |key|
@@ -118,9 +118,14 @@ class RedisLodgingService
     end
   end
 
-  # ✅ Recherche texte
+  # ✅ Text Search
   def text_search(query, limit = 5)
-    results = @redis.call("FT.SEARCH", INDEX_NAME, query, "LIMIT", "0", limit.to_s)
+    results = @redis.call(
+      "FT.SEARCH",
+      INDEX_NAME,
+      query, "LIMIT", "0", limit.to_s,
+      "RETURN", "4", "title", "description", "price", "image_url"
+)
     count = results.shift
     lodgings = []
 
@@ -138,7 +143,7 @@ class RedisLodgingService
     lodgings
   end
 
-  # ✅ Recherche vectorielle (IA)
+  # ✅ Vector Search (IA)
   def search_similar(query, top_k = 5)
     query_embedding = generate_embedding(query)
     vector_blob = query_embedding.pack("e*")
@@ -170,7 +175,7 @@ class RedisLodgingService
     lodgings
   end
 
-  # ✅ Popularité
+  # ✅ Popularity
   def increment_popularity(lodging_key)
     @redis.zincrby("lodgings_popularity", 1, lodging_key)
   end
@@ -197,7 +202,7 @@ class RedisLodgingService
 
   private
 
-  # ✅ Mock embedding si OpenAI absent
+  # ✅ Mock embedding if no OpenAI key or client
   def generate_embedding(text)
     return mock_embedding(text) if should_mock?
 
@@ -237,19 +242,19 @@ class RedisLodgingService
     embedding
   end
 
-  # ✅ Broadcast unifié (Streams + Pub/Sub + ActionCable)
-  def broadcast(action, data)
-    lodging_data = data.transform_keys(&:to_s)
-    flat_event = lodging_data.merge("action" => action)
+ # ✅ Broadcast unified (Streams + Pub/Sub + ActionCable)
+ def broadcast(action, data)
+  lodging_data = data.transform_keys(&:to_s)
+  flat_event = lodging_data.merge("action" => action).compact  # remove nils
 
-    # Ajout de l'événement dans le Stream
-    @redis.xadd("lodgings_stream", flat_event, id: "*")
+  # Add event to Stream
+  @redis.xadd("lodgings_stream", flat_event, id: "*")
 
-    # ✅ Limite à 50 événements max
-    @redis.xtrim("lodgings_stream", 50, approximate: true)
+  # ✅ Limit to 50 max events (raw command)
+  @redis.call("XTRIM", "lodgings_stream", "MAXLEN", "~", "50")
 
-    # Notifications en temps réel
-    @redis.publish("lodgings_channel", { "action" => action, "lodging" => lodging_data }.to_json)
-    ActionCable.server.broadcast("lodgings_channel", { "action" => action, "lodging" => lodging_data })
-  end
+  # Real-time notifications
+  @redis.publish("lodgings_channel", { "action" => action, "lodging" => lodging_data }.to_json)
+  ActionCable.server.broadcast("lodgings_channel", { "action" => action, "lodging" => lodging_data })
+ end
 end

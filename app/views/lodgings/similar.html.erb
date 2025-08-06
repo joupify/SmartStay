@@ -6,10 +6,8 @@
       <% @lodgings.each do |lodging| %>
         <div class="col">
           <div class="card h-100 border-warning shadow-sm">
-            <!-- Image du logement -->
             <% if lodging[:image_url].present? %>
               <div class="card-img-container" style="height: 200px; overflow: hidden;">
-                
                 <%= image_tag lodging[:image_url], class: "card-img-top img-fluid h-100 w-100 object-fit-cover", alt: lodging[:title] %>
               </div>
             <% else %>
@@ -35,11 +33,11 @@
                 <i class="bi bi-star-half"></i>
                 <small class="text-muted ms-2">4.5</small>
               </div>
-              
-              <!-- Boutons d'action -->
+
+              <!-- Action buttons -->
               <div class="d-flex gap-2">
-                <%= link_to "Voir", lodging_path(lodging[:id]), class: "btn btn-sm btn-outline-warning flex-grow-1" %>
-                <%= link_to "Réserver", lodging_path(lodging[:id]), class: "btn btn-sm btn-warning flex-grow-1" %>
+                <%= link_to "View", lodging_path(lodging[:id]), class: "btn btn-sm btn-outline-warning flex-grow-1" %>
+                <%= link_to "Book", lodging_path(lodging[:id]), class: "btn btn-sm btn-warning flex-grow-1" %>
               </div>
             </div>
           </div>
@@ -47,7 +45,6 @@
       <% end %>
     </div>
   <% else %>
-    <div class="alert alert-warning">Aucun logement similaire trouvé.</div>
+    <div class="alert alert-warning">No similar lodging found.</div>
   <% end %>
-  
 </section>

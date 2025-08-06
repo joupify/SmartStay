@@ -1,11 +1,10 @@
 <div class="container mt-5">
-  <h1 class="mb-4">Ajouter un nouveau logement</h1>
+  <h1 class="mb-4">Add a New Lodging</h1>
 
-<%= form_with model: @lodging, local: true do |form| %>
-  
+  <%= form_with model: @lodging, local: true do |form| %>
     <% if @lodging&.errors&.any? %>
       <div class="alert alert-danger mb-4">
-        <h2 class="h4">Erreurs dans le formulaire :</h2>
+        <h2 class="h4">Errors in the form:</h2>
         <ul class="mb-0">
           <% @lodging.errors.full_messages.each do |message| %>
             <li><%= message %></li>
@@ -33,8 +32,8 @@
     </div>
     
     <div class="d-flex gap-3">
-      <%= form.submit "Créer le logement", class: "btn btn-primary" %>
-      <%= link_to "Retour à la liste", lodgings_path, class: "btn btn-outline-secondary" %>
+      <%= form.submit "Create Lodging", class: "btn btn-primary" %>
+      <%= link_to "Back to List", lodgings_path, class: "btn btn-outline-secondary" %>
     </div>
   <% end %>
 </div>

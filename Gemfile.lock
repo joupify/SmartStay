@@ -377,6 +377,7 @@ DEPENDENCIES
   rails (~> 7.2.2, >= 7.2.2.1)
   redis (~> 5.4)
   rspec-rails
+  rubocop
   rubocop-rails-omakase
   ruby-openai (~> 8.1)
   sassc-rails

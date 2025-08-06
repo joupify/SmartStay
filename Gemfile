@@ -38,13 +38,12 @@ gem "bootsnap", require: false
 
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
-  gem 'rspec-rails'
+  gem "rspec-rails"
 
 
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
-
-  # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
+  gem "rubocop", require: false
   gem "rubocop-rails-omakase", require: false
 end
 
@@ -61,5 +60,3 @@ gem "redis", "~> 5.4"
 gem "ruby-openai", "~> 8.1"
 gem "bootstrap", "~> 5.3"
 gem "sassc-rails"
-
-

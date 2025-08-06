@@ -15,7 +15,7 @@ consumer.subscriptions.create("LodgingsChannel", {
     const container = document.getElementById("notifications");
     if (!container) return;
 
-    const { action, lodging } = data; // ✅ Déstructuration propre
+    const { action, lodging } = data;
     let message = "";
 
     switch (action) {

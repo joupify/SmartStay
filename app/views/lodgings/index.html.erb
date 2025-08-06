@@ -1,8 +1,8 @@
 <div class="container mt-4 mb-5">
-  <h1 class="h2 mb-4">Liste des logements</h1>
+  <h1 class="h2 mb-4">List of Lodgings</h1>
 
   <div class="d-flex flex-column flex-md-row align-items-center justify-content-between gap-3 mb-4">
-    <!-- Formulaire de recherche -->
+    <!-- Search form -->
     <%= form_with url: lodgings_path, method: :get, local: true, class: "flex-grow-1 w-100" do |form| %>
       <div class="input-group">
         <span class="input-group-text">
@@ -16,8 +16,8 @@
       </div>
     <% end %>
 
-    <!-- Bouton Ajouter -->
-    <%= link_to "Ajouter un logement", new_lodging_path,
+    <!-- Add lodging button -->
+    <%= link_to "Add lodging", new_lodging_path,
       class: "btn btn-primary ms-md-3 flex-shrink-0" %>
   </div>
 
@@ -31,7 +31,6 @@
 
           <div class="col">
             <div class="card h-100 shadow-sm">
-              <!-- Image en haut de la carte -->
               <% if lodging[:image_url].present? %>
                 <div class="card-img-container" style="height: 200px; overflow: hidden;">
                   <%= image_tag lodging[:image_url], class: "card-img-top img-fluid h-100 w-100 object-fit-cover", alt: lodging[:title] %>
@@ -61,7 +60,7 @@
                     <i class="bi bi-pencil"></i> 
                   <% end %>
 
-                  <%= button_to delete_lodging_path(lodging[:id]), method: :delete, data: { confirm: "Confirmer la suppression ?" }, class: "btn btn-sm btn-outline-danger", title: "delete" do %>
+                  <%= button_to delete_lodging_path(lodging[:id]), method: :delete, data: { confirm: "Are you sure you want to delete this lodging?" }, class: "btn btn-sm btn-outline-danger", title: "delete" do %>
                     <i class="bi bi-trash"></i>
                   <% end %>
                 </div>
@@ -71,22 +70,26 @@
         <% end %>
       </div>
     <% else %>
-      <div class="alert alert-info">Aucun logement trouvé.</div>
+      <div class="alert alert-info">no results found.</div>
     <% end %>
   </section>
 
+
+    <!-- Popular Lodgings -->
   <section class="mt-5">
-    <h2 class="h3 mb-3">Top logements populaires</h2>
-    
+    <h2 class="h3 mb-3">Top popular lodgings</h2>
+
     <% if @top_lodgings.any? %>
       <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         <% @top_lodgings.each do |lodging| %>
           <div class="col">
             <div class="card h-100 border-warning shadow-sm">
-              <!-- Image pour les logements populaires -->
+              <!-- Image for top popular lodgings -->
               <% if lodging[:image_url].present? %>
                 <div class="card-img-container" style="height: 200px; overflow: hidden;">
                   <%= image_tag lodging[:image_url], class: "card-img-top img-fluid h-100 w-100 object-fit-cover", alt: lodging[:title] %>
+                  <%= image_tag asset_path(lodging[:image_url]) %>
+
                 </div>
               <% end %>
 
@@ -108,14 +111,14 @@
                 </div>
               </div>
               <div class="card-footer bg-transparent">
-                <%= link_to "Réserver maintenant", lodging_path(lodging[:key]), class: "btn btn-warning w-100" %>
+                <%= link_to "Réserver maintenant", lodging_path(lodging[:id]), class: "btn btn-warning w-100" %>
               </div>
             </div>
           </div>
         <% end %>
       </div>
     <% else %>
-      <div class="alert alert-warning">Aucun logement populaire.</div>
+      <div class="alert alert-warning">No popular lodgings found.</div>
     <% end %>
   </section>
 </div>
