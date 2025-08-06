@@ -148,7 +148,7 @@ Notifications en temps réel (création, mise à jour, suppression)
 Recherche textuelle avec RediSearch
 Recherche similaire via Redis Vector Search + embeddings IA (mock actuellement)
 
-✅ Fonctionnalités Implémentées
+✅ Fonctionnalités Implémentées  
 ✔ CRUD complet (logements stockés dans Redis)
 
 ✔ Diffusion temps réel avec ActionCable
@@ -166,6 +166,7 @@ Recherche similaire via Redis Vector Search + embeddings IA (mock actuellement)
 ✔ Persistance activée (AOF avec Docker)
 
 🔥 Fonctionnalités à venir
+
 🔍 Recherche vectorielle IA avec embeddings OpenAI réels
 
 🧠 Assistant IA pour recommandations
@@ -175,6 +176,7 @@ Recherche similaire via Redis Vector Search + embeddings IA (mock actuellement)
 ✅ Déploiement sur Render + Redis Cloud
 
 🛠 Stack Technique
+
 Ruby : 3.1.3
 
 Rails : 7.2.2.1
@@ -190,13 +192,15 @@ Docker : Conteneur Redis Stack
 IA : OpenAI embeddings (mock si clé absente)
 
 🔧 Installation & Configuration
+
 1️⃣ Cloner le projet
 
 git clone https://github.com/joupify/smartstay.git
-cd smartstay
+
+cd smartstay  
 2️⃣ Installer les dépendances
 
-bundle install
+bundle install  
 3️⃣ Lancer Redis Stack avec persistance
 
 docker run -d \
@@ -218,6 +222,7 @@ Application : http://localhost:3000
 service = RedisLodgingService.new
 service.save_lodging(id: SecureRandom.uuid, title: "Studio cosy", description: "Bel studio avec balcon", price: 600)
 service.list_all_lodgings
+
 🔍 Recherche (RediSearch)
 
 service.text_search("studio")
@@ -230,6 +235,7 @@ Revient à des embeddings simulés uniquement si aucune clé API n’est disponi
 Le bouton **"Voir similaires"** déclenche une recherche sémantique via Redis Vector Search (KNN).
 
 📡 Notifications Temps Réel
+
 Ouvrir 2 navigateurs, ajouter un logement → notification instantanée (via ActionCable)
 
 UI (container Toast Bootstrap) :
@@ -246,7 +252,7 @@ Top logements populaires (via ZSET)
 
 Événements récents (via Redis Streams)
 
-✅ Persistance Redis
+✅ Persistance Redis  
 Activer AOF :
 
 docker exec -it redis-stack redis-cli CONFIG SET appendonly yes
@@ -256,8 +262,11 @@ docker exec -it redis-stack redis-cli CONFIG REWRITE
 
 ---
 
-📌 Page d’accueil (CRUD + notifications temps réel)
-![Home](docs/screenshots/home.png)  
+📌 Page d’accueil (CRUD)
+
+![Home](docs/screenshots/home.png)
+
+📌 Notifications temps réel( 2 browsers)  
 ![Notifications](docs/screenshots/notif.png)
 
 📌 Recherche textuelle & IA (Bouton Voir similaires)  
