@@ -262,17 +262,23 @@ docker exec -it redis-stack redis-cli CONFIG REWRITE
 
 ---
 
-📌 Page d’accueil (CRUD)
+## Demo
 
+You can try the application live here: [SmartStay Demo](https://ton-lien-vers-l-app.com)  
+Or watch this video demonstration showcasing the main features: [Demo Video](https://youtu.be/ton-lien-video)
+
+### Screenshots
+
+📌 **Home Page (CRUD Operations)**  
 ![Home](docs/screenshots/home.png)
 
-📌 Notifications temps réel( 2 browsers)  
+📌 **Real-Time Notifications (2 Browsers)**  
 ![Notifications](docs/screenshots/notif.png)
 
-📌 Recherche textuelle & IA (Bouton Voir similaires)  
+📌 **Text & AI-powered Search (See Similar Button)**  
 ![Search](docs/screenshots/search.png)
 
-📌 Dashboard (Top logements + événements récents)  
+📌 **Dashboard (Top Lodgings & Recent Events)**  
 ![Dashboard](docs/screenshots/dashboard.png)
 
 ---
