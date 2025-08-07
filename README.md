@@ -131,7 +131,7 @@ This project is licensed under the [MIT License](LICENSE).
 **Malika (joupify)**  
 [GitHub](https://github.com/joupify)
 
-[![DEV Post](https://img.shields.io/badge/DEV-Read%20Article-black?logo=dev.to)](https://dev.to/joupify/smartstay-redis-ai-challenge) <!-- Update link after publishing -->
+[![DEV Post](https://img.shields.io/badge/DEV-Read%20Article-black?logo=dev.to)](https://dev.to/joupify/smartstay-redis-powered-real-time-ai-lodging-manager-51o8)
 
 ## 🤝 Contributing
 
@@ -297,6 +297,13 @@ Or watch this video demonstration showcasing the main features: [Demo Video](htt
 
 Watch the full demo with subtitles:  
 [▶ Watch on Kapwing](https://www.kapwing.com/videos/6894bcdf5b35285aba9440d8)
+
+## 👩‍💻 Author
+
+**Malika (joupify)**  
+[GitHub](https://github.com/joupify)
+
+[![DEV Post](https://img.shields.io/badge/DEV-Read%20Article-black?logo=dev.to)](https://dev.to/joupify/smartstay-redis-powered-real-time-ai-lodging-manager-51o8)
 
 ## 📄 Licence
 
