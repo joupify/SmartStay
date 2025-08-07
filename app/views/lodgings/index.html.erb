@@ -9,10 +9,10 @@
           <i class="bi bi-search"></i>
         </span>
         <%= form.text_field :query,
-          placeholder: "Rechercher un logement...",
+          placeholder: "Search a lodging...",
           value: params[:query],
           class: "form-control" %>
-        <%= form.submit "Rechercher", class: "btn btn-secondary" %>
+        <%= form.submit "Search", class: "btn btn-secondary" %>
       </div>
     <% end %>
 
@@ -22,8 +22,8 @@
   </div>
 
   <section class="mb-5">
-    <h2 class="h3 mb-3">Résultats</h2>
-    
+    <h2 class="h3 mb-3">Results</h2>
+
     <% if @lodgings.any? %>
       <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         <% @lodgings.each do |lodging| %>
@@ -88,7 +88,6 @@
               <% if lodging[:image_url].present? %>
                 <div class="card-img-container" style="height: 200px; overflow: hidden;">
                   <%= image_tag lodging[:image_url], class: "card-img-top img-fluid h-100 w-100 object-fit-cover", alt: lodging[:title] %>
-                  <%= image_tag asset_path(lodging[:image_url]) %>
 
                 </div>
               <% end %>

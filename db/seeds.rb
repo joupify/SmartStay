@@ -3,17 +3,18 @@ require 'securerandom'
 
 redis = Redis.new(host: 'localhost', port: 6380)
 
-puts "Suppression des clés lodging:*"
+puts "Deleting all keys matching lodging:*"
 keys = redis.keys("lodging:*")
 redis.del(*keys) unless keys.empty?
-
-puts "Insertion des logements de test..."
+puts "Inserting test lodgings..."
 lodgings = [
-  { id: SecureRandom.uuid, title: "Appartement cosy Paris", description: "Charmant T2 proche centre", price: 120, image_url: "img1.png" },
-  { id: SecureRandom.uuid, title: "Loft moderne Lyon", description: "Grand espace lumineux", price: 150, image_url: "img2.png" },
-  { id: SecureRandom.uuid, title: "Studio étudiant Bordeaux", description: "Petite surface, bien situé", price: 70, image_url: "img3.png" },
-  { id: SecureRandom.uuid, title: "Villa piscine Nice", description: "Luxueuse villa avec piscine", price: 300, image_url: "img4.png" },
-  { id: SecureRandom.uuid, title: "Chambre simple Marseille", description: "Chambre privée dans colocation", price: 50, image_url: "img5.jpg" }
+  { id: SecureRandom.uuid, title: "Cozy apartment in Paris", description: "Charming one-bedroom near city center", price: 120, image_url: "img1.png" },
+  { id: SecureRandom.uuid, title: "Modern loft in Lyon", description: "Spacious and bright", price: 150, image_url: "img2.png" },
+  { id: SecureRandom.uuid, title: "Student studio in Bordeaux", description: "Small but well-located", price: 70, image_url: "img3.png" },
+  { id: SecureRandom.uuid, title: "Villa with pool in Nice", description: "Luxurious villa with swimming pool", price: 300, image_url: "img4.png" },
+  { id: SecureRandom.uuid, title: "Single room in Marseille", description: "Private room in shared apartment", price: 50, image_url: "img5.jpg" },
+  { id: SecureRandom.uuid, title: "Forest Cabin in Alsace", description: "Peaceful nature getaway", price: 90, image_url: "img6.jpg" }
+
 ]
 
 
@@ -36,8 +37,9 @@ lodgings.each do |lodging|
     "vector" => vector_blob,
     "image_url" => lodging[:image_url]
   })
+  
 
   puts "Inserted lodging #{lodging[:id]}: #{lodging[:title]}"
 end
 
-puts "Seed Redis terminé !"
+puts "Seed Redis complete!"

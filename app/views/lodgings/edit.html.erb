@@ -1,9 +1,9 @@
 <div class="container mt-5">
-  <h1 class="mb-4">Editer le logement</h1>
+  <h1 class="mb-4">Edit a lodging</h1>
 <%= form_with model: @lodging, url: lodging_path(@lodging.id), method: :patch, local: true do |form| %>
     <% if @lodging&.errors&.any? %>
       <div class="alert alert-danger mb-4">
-        <h2 class="h4">Erreurs dans le formulaire :</h2>
+        <h2 class="h4">Errors in the form:</h2>
         <ul class="mb-0">
           <% @lodging.errors.full_messages.each do |message| %>
             <li><%= message %></li>
@@ -13,12 +13,12 @@
     <% end %>
 
     <div class="mb-3">
-      <%= form.label :title, "Titre", class: "form-label" %>
+      <%= form.label :title, "Title", class: "form-label" %>
     <%= form.text_field :title, value: @lodging.title %>
     </div>
     
     <div class="mb-3">
-      <%= form.label :price, "Prix", class: "form-label" %>
+      <%= form.label :price, "Price", class: "form-label" %>
       <div class="input-group">
         <%= form.number_field :price, value: @lodging.price, class: "form-control", required: true, step: '0.01' %>
         <span class="input-group-text">€</span>
@@ -31,8 +31,8 @@
     </div>
     
     <div class="d-flex gap-3">
-      <%= form.submit "Mettre à jour le logement", class: "btn btn-primary" %>
-      <%= link_to "Retour à la liste", lodgings_path, class: "btn btn-outline-secondary" %>
+      <%= form.submit "Update lodging", class: "btn btn-primary" %>
+      <%= link_to "Back to list", lodgings_path, class: "btn btn-outline-secondary" %>
     </div>
   <% end %>
 </div>

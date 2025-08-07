@@ -12,7 +12,6 @@ class Lodging
   validates :title, presence: true
   validates :description, presence: true
   validates :price, numericality: { greater_than_or_equal_to: 0 }
-  validates :image_url, format: { with: URI::DEFAULT_PARSER.make_regexp(%w[http https]), allow_blank: true }
 
   # ✅ Trouve un logement dans Redis
   def self.find(id)

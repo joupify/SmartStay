@@ -2,15 +2,15 @@ import consumer from "./consumer";
 
 consumer.subscriptions.create("LodgingsChannel", {
   connected() {
-    console.log("✅ Connecté à LodgingsChannel");
+    console.log("✅ Connected LodgingsChannel");
   },
 
   disconnected() {
-    console.log("❌ Déconnecté de LodgingsChannel");
+    console.log("❌ DDisconnected LodgingsChannel");
   },
 
   received(data) {
-    console.log("📩 Événement reçu :", data);
+    console.log("📩 Event received :", data);
 
     const container = document.getElementById("notifications");
     if (!container) return;
@@ -20,16 +20,16 @@ consumer.subscriptions.create("LodgingsChannel", {
 
     switch (action) {
       case "created":
-        message = `🏠 Nouveau logement : ${lodging.title}`;
+        message = `🏠 New lodging : ${lodging.title}`;
         break;
       case "updated":
-        message = `✏️ Logement mis à jour : ${lodging.title}`;
+        message = `✏️ Lodging updated : ${lodging.title}`;
         break;
       case "deleted":
-    message = `🗑️ Logement supprimé : ${data.title}`;
+    message = `🗑️ Lodging deleted : ${data.lodging.title}`;
         break;
       default:
-        message = `ℹ️ Action inconnue : ${action}`;
+        message = `ℹ️ Unknown action : ${action}`;
     }
 
     const el = document.createElement("div");
