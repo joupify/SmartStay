@@ -262,10 +262,6 @@ docker exec -it redis-stack redis-cli CONFIG REWRITE
 
 ---
 
-## Demo
-
-You can try the application live here: [SmartStay Demo](https://ton-lien-vers-l-app.com)  
-Or watch this video demonstration showcasing the main features: [Demo Video](https://youtu.be/ton-lien-video)
 
 ### Screenshots
 
