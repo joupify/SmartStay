@@ -120,7 +120,9 @@ Add analytics (stream aggregation)
 ## 🎥 Demo Video
 
 Watch the full demo with subtitles:  
-[▶ Watch on Kapwing](https://www.kapwing.com/videos/6894bcdf5b35285aba9440d8)
+[▶ Watch on Youtube
+
+](https://youtu.be/pAIY7tOzB7I)
 
 ## 📄 License
 
@@ -292,7 +294,7 @@ docker exec -it redis-stack redis-cli CONFIG REWRITE
 ## 🎥 Demo Video
 
 Watch the full demo with subtitles:  
-[▶ Watch on Kapwing](https://www.kapwing.com/videos/6894bcdf5b35285aba9440d8)
+[▶ Watch on Youtube](https://youtu.be/pAIY7tOzB7I)
 
 ## 👩‍💻 Author
 
