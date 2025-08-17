@@ -120,9 +120,9 @@ Add analytics (stream aggregation)
 ## 🎥 Demo Video
 
 Watch the full demo with subtitles:  
-[▶ Watch on Youtube
+▶ Watch on Youtube
 
-](https://youtu.be/pAIY7tOzB7I)
+(https://youtu.be/pAIY7tOzB7I)
 
 ## 📄 License
 
